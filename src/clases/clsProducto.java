@@ -29,6 +29,7 @@ public class clsProducto {
     private Double descuento; 
     private Integer id_grupo_producto;
     private String estado;
+    private Double porcentaje_vendedor; 
     
     public String getIdItems() {
         return id_items;
@@ -134,6 +135,14 @@ public class clsProducto {
         this.estado = estado;
     }
     
+    public Double getPorcentajeVendedor() {
+        return porcentaje_vendedor;
+    }
+    
+    public void setPorcentajeVendedor(Double porcentaje_vendedor) {
+        this.porcentaje_vendedor = porcentaje_vendedor;
+    }
+    
     public List<String> consultarCodigos(){            
         List<String> data = new ArrayList<String>();  
         try{
@@ -168,7 +177,9 @@ public class clsProducto {
         return data;
     }
     
-    public boolean insertarProducto(String codigo, String descripcion, String costo, String cantidad, char controlMinimo, String cantidadMinima, String controlExistencia, char controlPerecible, String fechaCaducidad, String descuento, String idGrupo)
+    public boolean insertarProducto(String codigo, String descripcion, String costo, String cantidad, 
+            char controlMinimo, String cantidadMinima, String controlExistencia, char controlPerecible, 
+            String fechaCaducidad, String descuento, String idGrupo, String porcentajeVendedor)
     {
         boolean exito;
         try
@@ -177,11 +188,11 @@ public class clsProducto {
             sql = "INSERT INTO ck_items"
                     + "(cod_item, des_item, costo, cant_stock, fecha_caducidad,"
                     + " control_minimo, cantidad_minima, "
-                    + " control_existencia, control_perecible, descuento, id_grupo_producto)"
+                    + " control_existencia, control_perecible, descuento, id_grupo_producto, porcentaje_vendedor)"
                     + " VALUES('" + codigo + "', '" + descripcion + "', " + costo 
                     + " , " + cantidad + ", '" + fechaCaducidad + "',"
                     + " '" + controlMinimo + "', "+ cantidadMinima+","
-                    + " '"+ controlExistencia+"', '"+controlPerecible+"', "+descuento+", "+idGrupo+")";           
+                    + " '"+ controlExistencia+"', '"+controlPerecible+"', "+descuento+", "+idGrupo+", " + porcentajeVendedor+ ")";           
             System.out.println("SQL enviado:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
@@ -310,7 +321,7 @@ public class clsProducto {
             bd.conectarBaseDeDatos();
             sql = "SELECT id_items, cod_item, des_item, cant_stock, costo, "
                     + " control_perecible, fecha_caducidad, control_existencia, "
-                    + " control_minimo, cantidad_minima, descuento, id_grupo_producto, estado"
+                    + " control_minimo, cantidad_minima, descuento, id_grupo_producto, estado, porcentaje_vendedor"
                     + " FROM ck_items"
                     + " WHERE cod_item = '" + codigo + "'";                    
             bd.resultado = bd.sentencia.executeQuery(sql);
@@ -330,6 +341,7 @@ public class clsProducto {
                 oListaTemporal.setDescuento(bd.resultado.getDouble("descuento"));
                 oListaTemporal.setIdGrupoProducto(bd.resultado.getInt("id_grupo_producto"));
                 oListaTemporal.setEstado(bd.resultado.getString("estado"));
+                oListaTemporal.setPorcentajeVendedor(bd.resultado.getDouble("porcentaje_vendedor"));
                 data.add(oListaTemporal);
             }
             //return data;            
@@ -343,7 +355,10 @@ public class clsProducto {
         return data;
     }
     
-    public boolean modificarDataProducto(int p_id, String codigo, String descripcion, String stock, String costo, char controlMinimo, String cantidadMinima, String controlExistencia, char controlPerecible, String fechaCaducidad, String descuento, String idGrupo, String estado)
+    public boolean modificarDataProducto(int p_id, String codigo, String descripcion, 
+            String stock, String costo, char controlMinimo, String cantidadMinima, 
+            String controlExistencia, char controlPerecible, String fechaCaducidad, 
+            String descuento, String idGrupo, String estado, String porcentajeVendedor)
     {
         boolean exito;
         try
@@ -351,17 +366,18 @@ public class clsProducto {
             bd.conectarBaseDeDatos();
             sql = "UPDATE ck_items"
                     + " SET cod_item = '" + codigo + "',"
-                    + " des_item = '" + descripcion + "',"
-                    + " costo = " + costo + ","
-                    + " cant_stock = " + stock + ","
-                    + " control_minimo = '"+controlMinimo+"',"
-                    + " cantidad_minima = "+cantidadMinima+","
-                    + " control_existencia='"+controlExistencia+"',"
-                    + " control_perecible='"+controlPerecible+"',"
-                    + " fecha_caducidad='"+fechaCaducidad+"',"
-                    + " descuento = " + descuento +","
-                    + " id_grupo_producto = " + idGrupo +","
-                    + " estado = '" + estado + "'"
+                        + " des_item = '" + descripcion + "',"
+                        + " costo = " + costo + ","
+                        + " cant_stock = " + stock + ","
+                        + " control_minimo = '"+controlMinimo+"',"
+                        + " cantidad_minima = "+cantidadMinima+","
+                        + " control_existencia='"+controlExistencia+"',"
+                        + " control_perecible='"+controlPerecible+"',"
+                        + " fecha_caducidad='"+fechaCaducidad+"',"
+                        + " descuento = " + descuento +","
+                        + " id_grupo_producto = " + idGrupo +","
+                        + " estado = '" + estado + "',"
+                        + " porcentaje_vendedor = '" + porcentajeVendedor + "'"
                     + " WHERE id_items = " + p_id;      
            
             System.out.println("SQL enviado:" + sql);
