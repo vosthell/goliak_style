@@ -347,6 +347,11 @@ public class frmProductosMod extends javax.swing.JInternalFrame {
 
         tblDataPrecios.setModel(dtmData);
         tblDataPrecios.setName("tblDataPrecios"); // NOI18N
+        tblDataPrecios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDataPreciosMouseClicked(evt);
+            }
+        });
         tblDataPrecios.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tblDataPreciosKeyTyped(evt);
@@ -717,7 +722,7 @@ public class frmProductosMod extends javax.swing.JInternalFrame {
                 .addComponent(jideTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGuardarCambios)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -1102,6 +1107,19 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Double porcentaje = Double.parseDouble(txtPorcentajeVendedor.getText().toString());  
         txtDineroVendedor.setText("" + (valor * porcentaje /100)); 
     }//GEN-LAST:event_txtPorcentajeVendedorKeyReleased
+
+    private void tblDataPreciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataPreciosMouseClicked
+        int fila = tblDataPrecios.rowAtPoint(evt.getPoint());
+        //int columna = tblData.columnAtPoint(evt.getPoint());
+        double costo = Double.parseDouble(tblDataPrecios.getValueAt(fila,1).toString());
+        double utilidad_porcentaje = Double.parseDouble(tblDataPrecios.getValueAt(fila,2).toString());
+        double utilidad_plata = costo * utilidad_porcentaje / 100;
+        
+        double porcentaje_vendedor = Double.parseDouble(txtPorcentajeVendedor.getText());
+        
+        double plata_vendedor = utilidad_plata * porcentaje_vendedor / 100;
+        txtDineroVendedor.setText(""+objUtils.redondear(plata_vendedor));
+    }//GEN-LAST:event_tblDataPreciosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarPrecio;

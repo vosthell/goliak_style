@@ -16,11 +16,15 @@ import clases.clsCliente;
 import clases.clsComboBox;
 import clases.clsCuota;
 import clases.clsDetalle;
+import clases.clsEmail;
+import clases.clsEmpleado;
 import clases.clsFacturero;
 import clases.clsImpuestos;
+import clases.clsParametros;
 import clases.clsPrecio;
 import clases.clsProducto;
 import clases.clsUtils;
+import clases.javaMail;
 import com.jidesoft.hints.ListDataIntelliHints;
 import com.jidesoft.swing.SelectAllUtils;
 import index.main;
@@ -46,16 +50,19 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Kaiser
  */
 public class frmFacturar extends javax.swing.JDialog {
-    clsCliente objCliente = new clsCliente();
-    clsProducto objProducto = new clsProducto();
-    clsPrecio objPrecio = new clsPrecio();
-    clsUtils objUtils = new clsUtils();
-    clsCaja objCaja = new clsCaja();
-    clsCabecera objCabecera = new clsCabecera();
-    clsDetalle objDetalle = new clsDetalle();
-    clsCuota objCuota = new clsCuota();
-    clsImpuestos objImpuestos = new clsImpuestos();
-    clsFacturero objFacturero = new clsFacturero();
+    clsCliente      objCliente = new clsCliente();
+    clsProducto     objProducto = new clsProducto();
+    clsPrecio       objPrecio = new clsPrecio();
+    clsUtils        objUtils = new clsUtils();
+    clsCaja         objCaja = new clsCaja();
+    clsCabecera     objCabecera = new clsCabecera();
+    clsDetalle      objDetalle = new clsDetalle();
+    clsCuota        objCuota = new clsCuota();
+    clsImpuestos    objImpuestos = new clsImpuestos();
+    clsFacturero    objFacturero = new clsFacturero();
+    clsEmpleado     objEmpleado = new clsEmpleado();
+    clsParametros   objParametros = new clsParametros();
+    clsEmail        objEmail = new clsEmail();
     
     MiModelo dtmData = new MiModelo();
     String idCajero="";
@@ -135,12 +142,12 @@ public class frmFacturar extends javax.swing.JDialog {
         }
         
         //CARGAR VENDEDORES
-        /*ArrayList<clsComboBox> dataGrupo = objGrupo.consultarGrupos();        
+        ArrayList<clsComboBox> dataGrupo = objEmpleado.consultar_personal();        
         for(int i=0;i<dataGrupo.size();i=i+1)
         {
             clsComboBox oItem = new clsComboBox(dataGrupo.get(i).getCodigo(), dataGrupo.get(i).getDescripcion());
-            cmbGrupo.addItem(oItem);            
-        }*/
+            cmbVendedor.addItem(oItem);            
+        }
         
         //CARGAR VALOR DE LA FACTURA
         obtenerFacturaQueToca();
@@ -251,6 +258,8 @@ public class frmFacturar extends javax.swing.JDialog {
         txtTarifaIVA = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
         btnDescuento = new javax.swing.JButton();
+        txtEmail = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
         btnImprimir = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
@@ -558,7 +567,6 @@ public class frmFacturar extends javax.swing.JDialog {
         jLabel25.setText(resourceMap.getString("jLabel25.text")); // NOI18N
         jLabel25.setName("jLabel25"); // NOI18N
 
-        cmbVendedor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbVendedor.setName("cmbVendedor"); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -711,15 +719,23 @@ public class frmFacturar extends javax.swing.JDialog {
             }
         });
 
+        txtEmail.setEditable(false);
+        txtEmail.setBackground(resourceMap.getColor("txtEmail.background")); // NOI18N
+        txtEmail.setText(resourceMap.getString("txtEmail.text")); // NOI18N
+        txtEmail.setName("txtEmail"); // NOI18N
+
+        jLabel26.setText(resourceMap.getString("jLabel26.text")); // NOI18N
+        jLabel26.setName("jLabel26"); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnMostrarProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -758,8 +774,13 @@ public class frmFacturar extends javax.swing.JDialog {
                         .addComponent(jLabel20)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel26)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtEmail)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -843,7 +864,10 @@ public class frmFacturar extends javax.swing.JDialog {
                         .addGap(23, 23, 23))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(22, 22, 22))))
+                        .addGap(2, 2, 2)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel26)))))
         );
 
         btnImprimir.setIcon(resourceMap.getIcon("btnImprimir.icon")); // NOI18N
@@ -1112,6 +1136,7 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     exito = objDetalle.insertarDetalle(ultmFactura, idProducto, cantidad, precio, descuento, iva);
                     objProducto.insertarKardex(idProducto, "FACTURACION, ID FACTURA:"+ultmFactura, "-"+cantidad);
                     objProducto.disminuirStock(idProducto, cantidad);
+                    //GUARDAR PORCENTAJE A VENDEDOR
                 }          
                 //SI ES MANUAL MODIFICO EL PARAMETRO PRIMERA VEZ A "N"
                 factManual = objCaja.comprobarFacturacionManual(idCajaAbierta); 
@@ -1537,6 +1562,35 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
               // throw new RuntimeException(e2);
            }
         }
+        
+        //ENVIO DE CORREO
+        String email_habilitado = objParametros.consultaValor("email_habilitado");
+        if(email_habilitado.equals("1"))
+        {    
+            try{
+               String texto = objParametros.consultaValor("email_html_head_kolozzus");
+               texto = texto + "Factura registrada con exito! </BR></BR>"                       
+                       + "<TABLE BORDER=\"1\">"
+                               + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
+                               + "<TR><TD>CLIENTE:</TD><TD>" + txtNombreCliente.getText() + "</TD></TR>"                   
+                               + "<TR><TD>TOTAL DE FACTURA:</TD><TD>" + txtTotal.getText() + "</TD></TR>"           
+                        + "</TABLE></BR>"; 
+               texto = texto + objParametros.consultaValor("email_html_foot_kolozzus");
+
+               javaMail mail = new javaMail();        
+               
+                //ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("11");              
+                //mail.send(dataEmail3.get(i).getEmail(), "VENTA MAYOR", texto);
+               mail.send(txtEmail.getText(), "FACTURA REGISTRADA", texto);
+               mail.send("vosthell@hotmail.com", "FACTURA REGISTRADA", texto);          
+           }
+           catch(Exception e){
+               //e.printStackTrace();
+               JOptionPane.showMessageDialog(this, e.getMessage(), "Error al enviar por correo", JOptionPane.ERROR_MESSAGE);
+           }       
+        }
+        //ENVIO DE CORREO - FIN
+        
         frmCambio ventana = new frmCambio(null, true, totalEfectivo);
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
@@ -1734,9 +1788,12 @@ private void txtDescuentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         else
         {
             vaciarDatos();
+            
             txtCedula.setText(dataCliente.get(0).getCedula());
             codigoCliente = dataCliente.get(0).getCodigo();            
             this.txtNombreCliente.setText(dataCliente.get(0).getNameCompleto());
+            txtEmail.setText(dataCliente.get(0).getEmail());
+            
             txtCodigoProducto.requestFocus();
         }        
     }
@@ -1813,6 +1870,7 @@ private void txtDescuentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1836,6 +1894,7 @@ private void txtDescuentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
     private javax.swing.JTextField txtDescuento;
     public static javax.swing.JTextField txtDescuentoUnidad;
     private javax.swing.JTextField txtEfectivo;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFactura;
     private javax.swing.JTextField txtFechaCancelacion;
     private javax.swing.JTextField txtIVA;

@@ -60,7 +60,7 @@
               <Component id="jideTabbedPane1" min="-2" pref="246" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnGuardarCambios" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace pref="19" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -536,6 +536,7 @@
                     <Property name="name" type="java.lang.String" value="tblDataPrecios" noResource="true"/>
                   </Properties>
                   <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblDataPreciosMouseClicked"/>
                     <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tblDataPreciosKeyTyped"/>
                   </Events>
                 </Component>

@@ -5,6 +5,7 @@
 package index;
 
 import clases.clsLicencia;
+import clases.clsParametros;
 import clases.clsSerial;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -38,6 +39,7 @@ public class main {
         } 
         clsLicencia objLicencia = new clsLicencia();
         clsSerial objSerial = new clsSerial();
+        clsParametros objParametros = new clsParametros();
         //verificar si hay licencia
         int licencia = objLicencia.consultaCantidad();
         if(licencia == 0)
@@ -108,7 +110,7 @@ public class main {
                 }               
                 else
                 {
-                    JOptionPane.showMessageDialog(null, "Esta licencia está caducada", "Mensaje", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, objParametros.consultaValor2("licencia_caducada"), "Mensaje", JOptionPane.WARNING_MESSAGE);
                 }               
             }
             else

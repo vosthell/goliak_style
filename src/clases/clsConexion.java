@@ -13,7 +13,7 @@ import java.sql.*;
  */
 public class clsConexion {
     clsUtils objUtils = new clsUtils();
-    String url;
+    String url, url2;
     final String user;
     final String pass;
     private Connection conexion;
@@ -85,6 +85,30 @@ public class clsConexion {
         catch (SQLException ex) {
             //ex.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(null,"Error Creacion Statement." + ex.getMessage());
+            System.exit(1);
+        }
+    }  
+  
+    
+    //AQUI VOYA  OBTENER EL SERVDUIOR QUEMADO EN UN ARCHIVO DE TEXTO
+    public void conectarBaseDeDatos2() {
+        try {
+            final String CONTROLADOR = "org.postgresql.Driver";
+            Class.forName( CONTROLADOR );
+            //System.getProperty( "user.dir" )+"/CarpetaBD/NombredelaBasedeDatos.mdb";
+            conexion = DriverManager.getConnection(url2, user, pass);
+            sentencia = conexion.createStatement();
+            /*JOptionPane.showMessageDialog(null, "si conecta");*/
+        }
+        catch (ClassNotFoundException ex1) {
+            //ex1.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null,"Error Carga Driver." + ex1.getMessage());
+            System.exit(1);
+        }
+        catch (SQLException ex) {
+            //ex.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null,"Error Creacion Statement." + ex.getMessage()
+                    + " / " + url2 + " / " + user +" / " + pass);
             System.exit(1);
         }
     }  

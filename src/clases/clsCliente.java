@@ -215,7 +215,7 @@ public class clsCliente {
         ArrayList<clsCliente> data = new ArrayList<clsCliente>();   
         try{
             bd.conectarBaseDeDatos();
-            sql = "SELECT codigo, cedula, name_completo"
+            sql = "SELECT codigo, cedula, name_completo, email"
                     + " FROM ck_cliente"
                     + " WHERE cedula = '" + cedula + "'"
                     + " AND estado = 'A'";
@@ -226,6 +226,7 @@ public class clsCliente {
                 oListaTemporal.setCedula(bd.resultado.getString("cedula"));
                 oListaTemporal.setCodigo(bd.resultado.getInt("codigo"));
                 oListaTemporal.setNameCompleto(bd.resultado.getString("name_completo"));
+                oListaTemporal.setEmail(bd.resultado.getString("email"));
                 data.add(oListaTemporal);
             }
             //return data;            

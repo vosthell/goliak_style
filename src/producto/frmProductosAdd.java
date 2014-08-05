@@ -464,12 +464,13 @@ public class frmProductosAdd extends javax.swing.JInternalFrame {
                     .addComponent(txtIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19)
-                    .addComponent(txtPorcentajeVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel21)
-                        .addComponent(txtDineroVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtDineroVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel19)
+                        .addComponent(txtPorcentajeVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -683,7 +684,7 @@ public class frmProductosAdd extends javax.swing.JInternalFrame {
                             .addComponent(cmbGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jideTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(btnGuardar)
                 .addContainerGap())
         );
@@ -1017,7 +1018,7 @@ private void txtUtilidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
         if(!objUtils.isDouble(x)){
             txtPorcentajeVendedor.setText("");
         }
-        Double valor = Double.parseDouble(dtmData.getValueAt(0, 6).toString());
+        Double valor = Double.parseDouble(dtmData.getValueAt(0,3).toString());
         Double porcentaje = Double.parseDouble(txtPorcentajeVendedor.getText().toString());  
         txtDineroVendedor.setText("" + (valor * porcentaje /100)); 
     }//GEN-LAST:event_txtPorcentajeVendedorKeyReleased
