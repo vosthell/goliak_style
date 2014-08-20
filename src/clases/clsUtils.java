@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
  * @author CKaiser
  */
 public class clsUtils {
-    public String version = "0.02 (2012.03.23.14.18)";
+    public String version = "0.02 (2014.08.19.14.18)";
     //MENSAJE CUANDO NO TIENE PERMISOS PARA ABRIR FORMULARIO
     public String msgSinPermisosFormulario = "USTED NO TIENE PERMISOS PARA ABRIR ESTE FORMULARIO.";
     public String msgTitleSinPermisos = "Atención!";

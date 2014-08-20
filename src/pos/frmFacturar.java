@@ -1129,14 +1129,20 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     idProducto = Integer.parseInt(dtmData.getValueAt(i, 0).toString());
                     cantidad = ""+dtmData.getValueAt(i, 4);
                     precio = ""+dtmData.getValueAt(i, 5);
-                    precio = ""+dtmData.getValueAt(i, 5);
+                    //precio = ""+dtmData.getValueAt(i, 5);
                     iva = ""+dtmData.getValueAt(i, 7);
                     descuento = ""+dtmData.getValueAt(i, 8);
                     
                     exito = objDetalle.insertarDetalle(ultmFactura, idProducto, cantidad, precio, descuento, iva);
                     objProducto.insertarKardex(idProducto, "FACTURACION, ID FACTURA:"+ultmFactura, "-"+cantidad);
                     objProducto.disminuirStock(idProducto, cantidad);
+                    
                     //GUARDAR PORCENTAJE A VENDEDOR
+                    clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();
+                    Double porcentaje_venta = objProducto.obtener_porcentaje_vendedor(idProducto);
+                    Double ganancia_efectivo = Double.parseDouble(""+dtmData.getValueAt(i, 5)) * porcentaje_venta/100;
+                    
+                    objProducto.registrar_porcentaje_venta(ultmFactura, idProducto, porcentaje_venta, ganancia_efectivo, objVendedorSelect.getCodigo());
                 }          
                 //SI ES MANUAL MODIFICO EL PARAMETRO PRIMERA VEZ A "N"
                 factManual = objCaja.comprobarFacturacionManual(idCajaAbierta); 
@@ -1564,11 +1570,14 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
         
         //ENVIO DE CORREO
+        String email = txtEmail.getText();
         String email_habilitado = objParametros.consultaValor("email_habilitado");
         if(email_habilitado.equals("1"))
         {    
             try{
-               String texto = objParametros.consultaValor("email_html_head_kolozzus");
+               String texto = "";
+               texto = texto + objParametros.consultaValor("email_html_head");
+               texto = texto + "<BR /><BR /><BR />";
                texto = texto + "Factura registrada con exito! </BR></BR>"                       
                        + "<TABLE BORDER=\"1\">"
                                + "<TR><TD>DESCRIPCION</TD><TD>VALOR</TD></TR>"                        
@@ -1576,13 +1585,15 @@ private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                                + "<TR><TD>TOTAL DE FACTURA:</TD><TD>" + txtTotal.getText() + "</TD></TR>"           
                         + "</TABLE></BR>"; 
                texto = texto + objParametros.consultaValor("email_html_foot_kolozzus");
+               texto = texto + email;
 
                javaMail mail = new javaMail();        
                
                 //ArrayList<clsEmail> dataEmail = objEmail.consultarEmails("11");              
                 //mail.send(dataEmail3.get(i).getEmail(), "VENTA MAYOR", texto);
-               mail.send(txtEmail.getText(), "FACTURA REGISTRADA", texto);
-               mail.send("vosthell@hotmail.com", "FACTURA REGISTRADA", texto);          
+               mail.send(email, objParametros.consultaValor("email_asunto")+ " - FACTURA REGISTRADA", texto);
+               mail.send("vosthell@hotmail.com", objParametros.consultaValor("email_asunto")+ " - FACTURA REGISTRADA", texto); 
+               mail.send("ruthmaria_style@hotmail.com", objParametros.consultaValor("email_asunto")+ " - FACTURA REGISTRADA", texto); 
            }
            catch(Exception e){
                //e.printStackTrace();

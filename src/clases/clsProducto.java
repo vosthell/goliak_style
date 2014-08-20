@@ -415,6 +415,30 @@ public class clsProducto {
         return exito;
     } 
     
+    public boolean registrar_porcentaje_venta(String ultmFactura, int idProducto, 
+            double porcentaje_venta, double ganancia_efectivo, String codigo_vendedor)
+    {       
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();          
+            sql = "INSERT INTO ck_personal_ganancias"
+                    + " (id_cabecera_movi, id_items, porcentaje_vendedor, ganancia_efectivo, id_personal)"
+                    + " VALUES(" + ultmFactura+ ", " + idProducto 
+                    + ", " + porcentaje_venta + ", "+ganancia_efectivo+", " + codigo_vendedor + ")";           
+            System.out.println("registrar_porcentaje_venta: " + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true; 
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    } 
+    
     public Integer obtenerUltimoProducto()
     {          
         int ultimo = 0; 
@@ -437,6 +461,31 @@ public class clsProducto {
         bd.desconectarBaseDeDatos();
         return ultimo;
     }
+    
+    public double obtener_porcentaje_vendedor(int id_producto)
+    {          
+        double ultimo = 0.00; 
+        try{
+            bd.conectarBaseDeDatos();
+            sql = "SELECT porcentaje_vendedor"
+                    + " FROM ck_items"
+                    + " WHERE id_items = " + id_producto;
+            System.out.println("obtener_porcentaje_vendedor: " + sql);        
+            bd.resultado = bd.sentencia.executeQuery(sql);             
+            while(bd.resultado.next()){               
+                ultimo = bd.resultado.getDouble("porcentaje_vendedor");              
+            }
+            //return nombreCajero;            
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+            ultimo = 0;
+        } 
+        bd.desconectarBaseDeDatos();
+        return ultimo;
+    }
+    
     
     public String obtenerCampoCombo(int idProducto)
     {          

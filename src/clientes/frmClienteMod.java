@@ -660,11 +660,30 @@ public final class frmClienteMod extends javax.swing.JInternalFrame {
             DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
             Date date1= txtFechaNacimiento.getDate();
             String fechaNac = df1.format(date1);
-            exito = objCliente.modificarRegistro(codigoCliente, txtCedula.getText().toString(),
-                    this.txtNombre1.getText().toUpperCase().toString(),
-                    this.txtNombre2.getText().toUpperCase().toString(), 
-                    this.txtApellido1.getText().toUpperCase().toString(), 
-                    this.txtApellido2.getText().toUpperCase().toString(),
+            
+            String cedula       = txtCedula.getText().toString().trim();
+            String nombre1      = txtNombre1.getText().toUpperCase().toString().trim();
+            String nombre2      = txtNombre2.getText().toUpperCase().toString().trim();
+            String apellido1    = txtApellido1.getText().toUpperCase().toString().trim();
+            String apellido2    = txtApellido2.getText().toUpperCase().toString().trim();
+            String email        = txtEmail.getText().toString().trim();
+            
+            String nombre_completo = "";
+            if(apellido1.length()>0)
+                nombre_completo = nombre_completo + apellido1;
+            if(apellido2.length()>0)
+                nombre_completo = nombre_completo + " " + apellido2;
+            if(nombre1.length()>0)
+                nombre_completo = nombre_completo + " " + nombre1;
+            if(nombre2.length()>0)
+                nombre_completo = nombre_completo + " " + nombre2;
+        
+            exito = objCliente.modificarRegistro(codigoCliente, 
+                    cedula,
+                    nombre1,
+                    nombre2, 
+                    apellido1, 
+                    apellido2,
                     this.txtConvencional.getText().toString(), 
                     this.txtCelular.getText().toString(),
                     this.txtDireccion.getText().toString(), 
@@ -675,27 +694,28 @@ public final class frmClienteMod extends javax.swing.JInternalFrame {
                     this.txtCredito.getText().toString(),
                     fechaNac,
                     objEstadoSelect.getCodigo(),
-                    txtEmail.getText().toString());
+                    email,
+                    nombre_completo);
             if (exito)
             {
                 JOptionPane.showMessageDialog(this, "Datos modificados con éxito", "Atención!", JOptionPane.INFORMATION_MESSAGE);
                 objAuditoria.insertarAuditoria("frmClienteMod", "MODIFICO DATOS DEL CLIENTE: "+
-                                            txtCedula.getText().toString()+" - "+
-                                            txtApellido1.getText().toUpperCase().toString()+" "+
-                                            txtApellido2.getText().toUpperCase().toString()+" "+
-                                            txtNombre1.getText().toUpperCase().toString()+" "+
-                                            txtNombre2.getText().toUpperCase().toString(), "3");
+                                            cedula      + " - "+
+                                            apellido1   + " " +
+                                            apellido2   + " " +
+                                            nombre1     + " " +
+                                            nombre2, "3");
                  dispose();
             }
             else
             {
                 JOptionPane.showMessageDialog(this, "Error al guardar información", "Atención!", JOptionPane.WARNING_MESSAGE);
                 objAuditoria.insertarAuditoria("frmClienteMod", "INTENTÓ MODIFICAR DATOS DEL CLIENTE: "+
-                                            txtCedula.getText().toString()+" - "+
-                                            txtApellido1.getText().toUpperCase().toString()+" "+
-                                            txtApellido2.getText().toUpperCase().toString()+" "+
-                                            txtNombre1.getText().toUpperCase().toString()+" "+
-                                            txtNombre2.getText().toUpperCase().toString(), "3");
+                                            cedula      + " - "+
+                                            apellido1   + " " +
+                                            apellido2   + " " +
+                                            nombre1     + " " +
+                                            nombre2, "3");
             }
         }
     }//GEN-LAST:event_btnModificarActionPerformed
