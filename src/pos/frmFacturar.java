@@ -1138,11 +1138,21 @@ private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                     objProducto.disminuirStock(idProducto, cantidad);
                     
                     //GUARDAR PORCENTAJE A VENDEDOR
+                    Calendar c = Calendar.getInstance();
+                    int mes = c.get(Calendar.MONTH);
+                    //annio = Integer.toString(c.get(Calendar.YEAR));
+                    int anio = c.get(Calendar.YEAR);
+                    
                     clsComboBox objVendedorSelect = (clsComboBox)cmbVendedor.getSelectedItem();
                     Double porcentaje_venta = objProducto.obtener_porcentaje_vendedor(idProducto);
                     Double ganancia_efectivo = Double.parseDouble(""+dtmData.getValueAt(i, 5)) * porcentaje_venta/100;
                     
-                    objProducto.registrar_porcentaje_venta(ultmFactura, idProducto, porcentaje_venta, ganancia_efectivo, objVendedorSelect.getCodigo());
+                    objProducto.registrar_porcentaje_venta(ultmFactura, idProducto, 
+                            porcentaje_venta, 
+                            ganancia_efectivo, 
+                            objVendedorSelect.getCodigo(),
+                            mes+1,
+                            anio);
                 }          
                 //SI ES MANUAL MODIFICO EL PARAMETRO PRIMERA VEZ A "N"
                 factManual = objCaja.comprobarFacturacionManual(idCajaAbierta); 

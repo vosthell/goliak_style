@@ -416,16 +416,19 @@ public class clsProducto {
     } 
     
     public boolean registrar_porcentaje_venta(String ultmFactura, int idProducto, 
-            double porcentaje_venta, double ganancia_efectivo, String codigo_vendedor)
+            double porcentaje_venta, double ganancia_efectivo, String codigo_vendedor,
+            int mes, int anio)
     {       
         boolean exito;
         try
         {           
             bd.conectarBaseDeDatos();          
             sql = "INSERT INTO ck_personal_ganancias"
-                    + " (id_cabecera_movi, id_items, porcentaje_vendedor, ganancia_efectivo, id_personal)"
+                    + " (id_cabecera_movi, id_items, porcentaje_vendedor, ganancia_efectivo, "
+                    + " id_personal, mes, anio)"
                     + " VALUES(" + ultmFactura+ ", " + idProducto 
-                    + ", " + porcentaje_venta + ", "+ganancia_efectivo+", " + codigo_vendedor + ")";           
+                    + ", " + porcentaje_venta + ", "+ganancia_efectivo+", " + codigo_vendedor + ", "
+                    + mes + ", " + anio + ")";           
             System.out.println("registrar_porcentaje_venta: " + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true; 
