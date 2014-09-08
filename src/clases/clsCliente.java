@@ -471,6 +471,7 @@ public class clsCliente {
         return exito;
     } 
     
+    /*ELIMINAR CLIENTE*/
     public boolean eliminarCliente(int p_codigo)
     {
         boolean exito;
@@ -482,6 +483,30 @@ public class clsCliente {
                     + " WHERE codigo = " + p_codigo;      
            
             System.out.println("SQL enviado:" + sql);
+            bd.sentencia.executeUpdate(sql);
+            exito = true;
+        }
+        catch(SQLException e) //Captura posible error de SQL
+        {
+            System.out.println("Error SQL:" + e);
+            exito = false;
+        } 
+        bd.desconectarBaseDeDatos();
+        return exito;
+    } 
+    
+    /*ACTUALIZAR EMAIL*/
+    public boolean actualizar_email(int p_codigo, String p_email)
+    {
+        boolean exito;
+        try
+        {           
+            bd.conectarBaseDeDatos();
+            sql = "UPDATE ck_cliente"
+                    + " SET email = '" + p_email + "'" 
+                    + " WHERE codigo = " + p_codigo;      
+           
+            System.out.println("SQL enviado - actualizar_email:" + sql);
             bd.sentencia.executeUpdate(sql);
             exito = true;
         }
