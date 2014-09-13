@@ -553,7 +553,7 @@ private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                         mail.send(email, objParametros.consultaValor("email_asunto")+ " - Gracias por preferirnos", texto);       
                         mail.send("vosthell@hotmail.com", objParametros.consultaValor("email_asunto")+" - Gracias por preferirnos", texto);       
                         mail.send("ruthmaria_style@hotmail.com", objParametros.consultaValor("email_asunto")+" - Gracias por preferirnos", texto);       
-                   
+                        mail.send("ruthmariasalonyspa@hotmail.com", objParametros.consultaValor("email_asunto")+ " - Gracias por preferirnos", texto);
                     }
                 }
                 catch(Exception e){
